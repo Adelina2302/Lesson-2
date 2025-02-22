@@ -2,18 +2,20 @@ from dotenv import load_dotenv
 import os
 import smtplib
 
-load_dotenv(dotenv_path="C:\\lesson_№2\\Login.env")
+load_dotenv()
 
 password = os.getenv("PASSWORD")
 login = os.getenv("LOGIN")
 
-sender = 'adelinadunina@yandex.ru'
-recipient = 'adelinadunina@yandex.ru'
+sender_email = "adelinadunina@yandex.ru"
+sender_name = "Аделина"
+recipient_email = "adelinadunina@yandex.ru"
+recipient_name = "Аня"
 
 letter = '''From: {s}
 To: {r}
 Subject: Приглашение!
-Content-Type: text/plain; charset="UTF-8";'''.format(s=sender, r=recipient)
+Content-Type: text/plain; charset="UTF-8";'''.format(s=sender_email, r=recipient_email)
 
 
 email_template = ''' 
@@ -38,17 +40,16 @@ email_template = '''
 
 email_website = email_template.replace("%website%", "https://dvmn.org/profession-ref-program/adelina2302.dunina/2302Dunina/")
 
-email_friend = email_website.replace("%friend_name%", "Аня")
+email_friend = email_website.replace("%friend_name%", recipient_name)
 
-email_me = email_friend.replace("%my_name%","Аделина")
+email_me = email_friend.replace("%my_name%",sender_name)
 
 message = letter + email_me
 
 message = message.encode("UTF-8")
 
-print(message.decode("UTF-8"))
 
 server = smtplib.SMTP_SSL('smtp.yandex.ru', 465) 
 server.login(login, password)
-server.sendmail('adelinadunina@yandex.ru', 'adelinadunina@yandex.ru', message)
+server.sendmail(sender_email, recipient_email, message)
 server.quit()
